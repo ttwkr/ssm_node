@@ -17,6 +17,7 @@ let members = [
 const get = (req, res) => {
     // 제한
     let limit = req.query.limit || 10
+    console.log('HI')
     res.json(members.slice(0,limit))
 }
 
