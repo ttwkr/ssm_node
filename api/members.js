@@ -1,24 +1,13 @@
-let members = [
-    {
-        id:1,
-        name:"서상진",
-    },
-    {
-        id:2,
-        name:"강희영",
-    },
-    {
-        id:3,
-        name:"박종일",
+const memberModel = require('../models').members
+
+const get = async (req, res, next) => {
+    try{
+        const members = await memberModel.findAll();
+        res.json(members)
+    } catch (e){
+        console.log(e)
+        next(e)
     }
-]
-
-
-const get = (req, res) => {
-    // 제한
-    let limit = req.query.limit || 10
-    console.log('HI')
-    res.json(members.slice(0,limit))
 }
 
 module.exports = {
