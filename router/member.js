@@ -4,9 +4,7 @@ const api = require('../api/members')
 
 router.route('/')
     .get(api.get)
-    .post((req, res) =>{
-        res.send("members post")
-    })
+    .post(api.post)
     .put((req, res) => {
         res.send("members put")
     })

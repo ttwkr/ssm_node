@@ -1,13 +1,14 @@
 const express = require('express')
 const routes = require('./router')
+const bodyParser = require('body-parser')
 const sequelize = require('./models').sequelize
 
 const app = express()
-const port = process.env.PORT||3000
+const port = process.env.PORT||8080
 
+app.use(bodyParser.json())
+app.use(express.urlencoded({extended:false}))
 app.use('/',routes)
-
-sequelize.sync()
 
 app.listen(port, async () => {
     await console.log(`${port} waiting server port` )
