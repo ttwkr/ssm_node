@@ -8,8 +8,6 @@ router.route('/')
     .put((req, res) => {
         res.send("members put")
     })
-    .delete((req, res) => {
-        res.send("members delete")
-    })
+    .delete(api.member_delete)
 
 module.exports = router

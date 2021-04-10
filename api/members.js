@@ -47,7 +47,31 @@ const post = async (req, res, next) => {
     }
 }
 
+const member_delete = async (res, req, next) => {
+    try{
+        const query_param = res.query
+        const now = new Date()
+        await memberModel.update(
+            {
+                deleted_at: now
+            },
+            {
+                where : {
+                    id:query_param.id
+                }
+            }
+        )
+        Response(res,{
+            data:"success",
+            code:"0000"
+        })
+    }catch (e){
+        console.log(e)
+    }
+}
+
 module.exports = {
     get:get,
-    post:post
+    post:post,
+    member_delete:member_delete
 }
