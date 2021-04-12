@@ -47,6 +47,33 @@ const post = async (req, res, next) => {
     }
 }
 
+const update = async (res, req, next) => {
+    try{
+        const member_id = req
+        const data = req.body
+        await memberModel.update(
+            {
+                name:data.name
+            },
+            {
+                where:{
+                    id:member_id
+                }
+            }
+        )
+        Response(res,{
+            data:"success",
+            code:"0000"
+        })
+    } catch (e) {
+        console.log(e)
+        Response(res, {
+            data: e.errors[0].message,
+            code: "0002"
+        })
+    }
+}
+
 const member_delete = async (res, req, next) => {
     try{
         const query_param = res.query
