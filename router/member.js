@@ -1,13 +1,11 @@
 const express = require('express')
 const router = express.Router()
-const api = require('../api/members')
+const {get,post,member_delete,update} = require('../api/members')
 
 router.route('/')
-    .get(api.get)
-    .post(api.post)
-    .put((req, res) => {
-        res.send("members put")
-    })
-    .delete(api.member_delete)
+    .get(get)
+    .post(post)
+    .put(update)
+    .delete(member_delete)
 
 module.exports = router

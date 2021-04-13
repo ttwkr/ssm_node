@@ -3,11 +3,11 @@ const Response = require('../util/response')
 const {Op} = require("sequelize");
 
 const get = async (req, res, next) => {
-    try{
+    try {
         const members = await memberModel.findAll(
             {
-                where:{
-                    deleted_at:{
+                where: {
+                    deleted_at: {
                         [Op.is]: null
                     }
                 }
@@ -17,14 +17,14 @@ const get = async (req, res, next) => {
             data: members,
             code: "0000"
         })
-    } catch (e){
+    } catch (e) {
         console.log(e)
         next(e)
     }
 }
 
 const post = async (req, res, next) => {
-    try{
+    try {
         const now = new Date()
         const data = req.body
         await memberModel.create(
@@ -48,22 +48,22 @@ const post = async (req, res, next) => {
 }
 
 const update = async (res, req, next) => {
-    try{
+    try {
         const member_id = req
         const data = req.body
         await memberModel.update(
             {
-                name:data.name
+                name: data.name
             },
             {
-                where:{
-                    id:member_id
+                where: {
+                    id: member_id
                 }
             }
         )
-        Response(res,{
-            data:"success",
-            code:"0000"
+        Response(res, {
+            data: "success",
+            code: "0000"
         })
     } catch (e) {
         console.log(e)
@@ -75,7 +75,7 @@ const update = async (res, req, next) => {
 }
 
 const member_delete = async (res, req, next) => {
-    try{
+    try {
         const query_param = res.query
         const now = new Date()
         await memberModel.update(
@@ -83,22 +83,23 @@ const member_delete = async (res, req, next) => {
                 deleted_at: now
             },
             {
-                where : {
-                    id:query_param.id
+                where: {
+                    id: query_param.id
                 }
             }
         )
-        Response(res,{
-            data:"success",
-            code:"0000"
+        Response(res, {
+            data: "success",
+            code: "0000"
         })
-    }catch (e){
+    } catch (e) {
         console.log(e)
     }
 }
 
 module.exports = {
-    get:get,
-    post:post,
-    member_delete:member_delete
+    get,
+    post,
+    member_delete,
+    update
 }
