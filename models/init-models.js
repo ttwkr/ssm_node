@@ -1,22 +1,22 @@
-var DataTypes = require("sequelize").DataTypes;
-var _codes = require("./codes");
-var _comments = require("./comments");
-var _members = require("./members");
-var _subscribe = require("./subscribe");
-var _words = require("./words");
-var _writing_word = require("./writing_word");
-var _writing_word_aggergation = require("./writing_word_aggergation");
-var _writings = require("./writings");
+let DataTypes = require("sequelize").DataTypes;
+let _codes = require("./codes");
+let _comments = require("./comments");
+let _members = require("./members");
+let _subscribe = require("./subscribe");
+let _words = require("./words");
+let _writing_word = require("./writing_word");
+let _writing_word_aggergation = require("./writing_word_aggergation");
+let _writings = require("./writings");
 
-function initModels(sequelize) {
-  var codes = _codes(sequelize, DataTypes);
-  var comments = _comments(sequelize, DataTypes);
-  var members = _members(sequelize, DataTypes);
-  var subscribe = _subscribe(sequelize, DataTypes);
-  var words = _words(sequelize, DataTypes);
-  var writing_word = _writing_word(sequelize, DataTypes);
-  var writing_word_aggergation = _writing_word_aggergation(sequelize, DataTypes);
-  var writings = _writings(sequelize, DataTypes);
+const initModels = (sequelize) => {
+  let codes = _codes(sequelize, DataTypes);
+  let comments = _comments(sequelize, DataTypes);
+  let members = _members(sequelize, DataTypes);
+  let subscribe = _subscribe(sequelize, DataTypes);
+  let words = _words(sequelize, DataTypes);
+  let writing_word = _writing_word(sequelize, DataTypes);
+  let writing_word_aggergation = _writing_word_aggergation(sequelize, DataTypes);
+  let writings = _writings(sequelize, DataTypes);
 
   comments.belongsTo(comments, { as: "parent", foreignKey: "parent_id"});
   comments.hasMany(comments, { as: "comments", foreignKey: "parent_id"});
