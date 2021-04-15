@@ -47,14 +47,12 @@ const post = async (req, res, next) => {
     }
 }
 
-const update = async (res, req, next) => {
+const update = async (req, res, next) => {
     try {
-        const member_id = req
+        const member_id = req.query.id
         const data = req.body
         await memberModel.update(
-            {
-                name: data.name
-            },
+            data,
             {
                 where: {
                     id: member_id
@@ -74,7 +72,7 @@ const update = async (res, req, next) => {
     }
 }
 
-const member_delete = async (res, req, next) => {
+const member_delete = async (req, res, next) => {
     try {
         const query_param = res.query
         const now = new Date()

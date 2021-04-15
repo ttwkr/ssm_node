@@ -4,7 +4,7 @@ const bodyParser = require('body-parser')
 const sequelize = require('./models').sequelize
 
 const app = express()
-const port = process.env.PORT||8080
+const port = process.env.PORT||3000
 
 app.use(bodyParser.json())
 app.use(express.urlencoded({extended:false}))
