@@ -47,7 +47,8 @@ const post = async (req, res, next) => {
     }
 }
 
-const update = async (req, res, next) => {
+const update = async (res, req, next) => {
+    //TODO 부분 업데이트 수행....
     try {
         const member_id = req.query.id
         const data = req.body
