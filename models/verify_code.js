@@ -13,8 +13,9 @@ module.exports = function(sequelize, DataTypes) {
       comment: "인증번호 코드"
     },
     is_success: {
-      type: DataTypes.STRING(45),
+      type: DataTypes.TINYINT,
       allowNull: false,
+      defaultValue: 0,
       comment: "성공여부"
     },
     email: {

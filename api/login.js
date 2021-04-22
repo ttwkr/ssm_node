@@ -1,4 +1,5 @@
 const { smtpTransport } = require('../config/email');
+const verifyModel = require('../models').verify_code
 
 const generateNum = () => {
     const min = 111111
@@ -8,8 +9,10 @@ const generateNum = () => {
 
 // 메일 인증번호 전송
 const mailAuth = async (req, res) => {
+    const now = new Date()
+    const expired_at = now.getMinutes()+5
     // 랜덤 숫자 생성
-    const auth_num = generateNum()
+    const code = generateNum()
     // json으로 메일 주소 받음
     const {email} = req.body
     // 메일 보냄
@@ -17,14 +20,15 @@ const mailAuth = async (req, res) => {
         from:'상진그룹',
         to: email,
         subject: '[인증번호]메일 인증번호 입니다.',
-        text:'인증번호 입니다. ' + auth_num
+        text:'인증번호 입니다. ' + code
     }
 
     const result = await smtpTransport.sendMail(mail_template,(error,responses) => {
         if (error) {
             console.log(error)
         } else {
-            console.log(responses)
+            // 검증테이블에 등록
+            verifyModel.create({email, code, expired_at})
         }
         smtpTransport.close();
     })
@@ -34,6 +38,20 @@ const mailAuth = async (req, res) => {
 
 // 메일 인증번호 확인
 const verifyCode = async (req, res) => {
+    // 이메일과 인증번호 확인
+    // 테이블에서 검증코드 가져옴
+    const data = req.body
+    const verify_instance = await verifyModel.findOne(
+        {
+            where:{
+                email:data.email,
+                code:data.code
+            }
+        }
+    )
+    // 만료시간 5분전 확인
+    const now = new Date()
+
 
 }
 
