@@ -6,6 +6,7 @@ const generateNum = () => {
     return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
+// 메일 인증번호 전송
 const mailAuth = async (req, res) => {
     // 랜덤 숫자 생성
     const auth_num = generateNum()
@@ -22,14 +23,18 @@ const mailAuth = async (req, res) => {
     const result = await smtpTransport.sendMail(mail_template,(error,responses) => {
         if (error) {
             console.log(error)
-            return error
         } else {
-            /* 클라이언트에게 인증 번호를 보내서 사용자가 맞게 입력하는지 확인! */
             console.log(responses)
-            return res.send(auth_num)
         }
         smtpTransport.close();
     })
+
+    res.json(result)
+}
+
+// 메일 인증번호 확인
+const verifyCode = async (req, res) => {
+
 }
 
 

@@ -1,48 +1,41 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('codes', {
+  return sequelize.define('verify_code', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    group: {
-      type: DataTypes.STRING(45),
-      allowNull: false,
-      comment: "코드 그룹"
-    },
     code: {
       type: DataTypes.STRING(45),
-      allowNull: false,
-      comment: "코드"
-    },
-    descript: {
-      type: DataTypes.STRING(45),
       allowNull: true,
-      comment: "설명"
+      comment: "인증번호 코드"
     },
-    is_use: {
-      type: DataTypes.TINYINT,
+    is_success: {
+      type: DataTypes.STRING(45),
       allowNull: false,
-      comment: "사용여부"
+      comment: "성공여부"
+    },
+    email: {
+      type: DataTypes.STRING(45),
+      allowNull: false,
+      comment: "이메일"
     },
     created_at: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP'),
+      comment: "생성일"
     },
-    updated_at: {
+    expired_at: {
       type: DataTypes.DATE,
-      allowNull: true
-    },
-    deleted_at: {
-      type: DataTypes.DATE,
-      allowNull: true
+      allowNull: true,
+      comment: "만료시간"
     }
   }, {
     sequelize,
-    tableName: 'codes',
+    tableName: 'verify_code',
     timestamps: false,
     indexes: [
       {

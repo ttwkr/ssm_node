@@ -27,7 +27,8 @@ module.exports = function(sequelize, DataTypes) {
     },
     created_at: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: false,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     },
     deleted_at: {
       type: DataTypes.DATE,
