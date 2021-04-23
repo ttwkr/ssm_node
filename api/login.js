@@ -10,7 +10,8 @@ const generateNum = () => {
 // 메일 인증번호 전송
 const mailAuth = async (req, res) => {
     const now = new Date()
-    const expired_at = now.getMinutes()+5
+    // 만료시간 + 5분
+    const expired_at = new Date(now.setMinutes(now.getMinutes()+5))
     // 랜덤 숫자 생성
     const code = generateNum()
     // json으로 메일 주소 받음
@@ -51,11 +52,33 @@ const verifyCode = async (req, res) => {
     )
     // 만료시간 5분전 확인
     const now = new Date()
+    const expired_at = verify_instance.expired_at
+    const timeGap = (expired_at.getTime()-now.getTime())/1000 / 60
 
-
+    if (timeGap < 0){
+        res.json(
+            {
+                data:"error",
+                code:"0002"
+            }
+        )
+    } else {
+        verify_instance.update(
+            {
+                is_success:true
+            }
+        )
+        res.send(
+            {
+                data:"success",
+                code:"0000"
+            }
+        )
+    }
 }
 
 
 module.exports={
-    mailAuth
+    mailAuth,
+    verifyCode
 }

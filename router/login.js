@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const {mailAuth}  = require('../api/login')
+const {mailAuth, verifyCode}  = require('../api/login')
 
-router.route('/')
-    .post(mailAuth)
+router.post('/auth/', mailAuth)
+router.post('/verify/',verifyCode)
 
 module.exports = router
