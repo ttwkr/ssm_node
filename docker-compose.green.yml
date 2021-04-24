@@ -1,0 +1,9 @@
+version: '2'
+
+services:
+  ssm_node:
+    image: ssm-node-image
+    volumes:
+      - /home/ubuntu/deploy/ssm_node:/deploy/ssm_node
+    ports:
+      - "3002:3000"

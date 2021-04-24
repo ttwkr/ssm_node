@@ -6,6 +6,36 @@ before_install:
 branches:
   only:
     - master
+before_deploy:
+  - rm -rf node_module
+  - zip -r ssm_node
+  - mkdir -p deploy
+  - mv ssm_node.zip deploy/ssm_node.zip
+deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: ssm-remake
+    region: ap-northeast-2
+    skip_cleanup: true
+    local_dir: deploy
+    wait-until-deployed: true
+    on:
+      repo: ttwkr/ssm_node
+      branch: master
+  - provider: codedeploy
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: ssm-remake
+    key: ssm_node.zip
+    bundle_type: zip
+    application: ssm_node
+    deployment_group: ssm-node-group
+    region: ap-northeast-2
+    wait-until-deployed: true
+    on:
+      repo: ttwkr/ssm_node
+      branch: master
 notifications:
   email:
     recipients:
