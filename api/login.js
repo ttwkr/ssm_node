@@ -58,7 +58,7 @@ const verifyCode = async (req, res) => {
     if (timeGap < 0){
         res.json(
             {
-                data:"error",
+                data:"code expired",
                 code:"0002"
             }
         )
