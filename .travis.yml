@@ -8,7 +8,7 @@ branches:
   only:
     - master
 before_deploy:
-  - rm -rf node_module
+  - rm -rf node_module/
   - zip -r ssm_node *
   - mkdir -p deploy
   - mv ssm_node.zip deploy/ssm_node.zip
