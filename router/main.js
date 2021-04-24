@@ -3,7 +3,7 @@ const router = express.Router()
 
 // Main Page
 router.get('/', (req, res, next) => {
-    res.send("This is version 2")
+    res.send("This is version 3")
 })
 
 module.exports = router
