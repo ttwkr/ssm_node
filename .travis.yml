@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+  - "14.15.2"
+before_install:
+  - npm install -g yarn
+branches:
+  only:
+    - master
+notifications:
+  email:
+    recipients:
+      - devttwkr@gmal.com
