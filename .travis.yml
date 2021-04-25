@@ -40,4 +40,4 @@ deploy:
 notifications:
   email:
     recipients:
-      - devttwkr@gmal.com
+      - devttwkr@gmail.com
