@@ -1,6 +1,7 @@
 const {smtpTransport} = require('../config/email');
 const {verify_code, members} = require('../models')
 const bcrypt = require('bcrypt')
+const {Op} = require('sequelize')
 
 const generateNum = () => {
     const min = 111111
@@ -102,9 +103,7 @@ const join = async (req, res) => {
             // 가입 시작
             const password = data.password
             console.time("암호화 시작")
-            const hashed_password = bcrypt.hash(password, 12, (err, hash) => {
-
-            })
+            const hashed_password = await bcrypt.hash(password, 12)
             console.timeEnd("암호화 끝")
             await members.create(
                 {
@@ -126,8 +125,54 @@ const join = async (req, res) => {
         console.log(e)
         res.json(
             {
-                data:e,
-                code:"0002"
+                data: e,
+                code: "0002"
+            }
+        )
+    }
+}
+
+//로그인
+const login = async (req, res) => {
+    try {
+        const {email, password} = req.body
+
+        // 회원 존재 여부 확인
+        const member_instance = await members.findOne(
+            {
+                where: {
+                    email: email,
+                    deleted_at: {
+                        [Op.is]: null
+                    }
+                }
+            }
+        )
+
+        if (!member_instance) {
+            throw "there is no member"
+        }
+
+        const check_password = await bcrypt.compare(password, member_instance.password)
+
+        if (!check_password){
+            throw "wrong password"
+        }
+
+        res.json(
+            {
+                data:"success",
+                code:"0000"
+            }
+        )
+
+
+    } catch (e) {
+        console.error(e)
+        res.json(
+            {
+                data: e,
+                code: "0002"
             }
         )
     }
@@ -137,5 +182,6 @@ const join = async (req, res) => {
 module.exports = {
     mailAuth,
     verifyCode,
-    join
+    join,
+    login
 }
