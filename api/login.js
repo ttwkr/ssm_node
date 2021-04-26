@@ -1,6 +1,7 @@
 const {smtpTransport} = require('../config/email');
-const {verify_code, members} = require('../models')
+const {verify_code, members, member_token} = require('../models')
 const bcrypt = require('bcrypt')
+const {makeToken} = require('../util/auth')
 const {Op} = require('sequelize')
 
 const generateNum = () => {
@@ -135,6 +136,9 @@ const join = async (req, res) => {
 //로그인
 const login = async (req, res) => {
     try {
+        const now = new Date()
+        // 만료시간 + 5분
+        const expired_at = new Date(now.setHours(now.getHours() + 1))
         const {email, password} = req.body
 
         // 회원 존재 여부 확인
@@ -158,6 +162,18 @@ const login = async (req, res) => {
         if (!check_password){
             throw "wrong password"
         }
+
+        // 회원 확인 성공시 토큰 발급
+        const token = makeToken(member_instance)
+        // 토큰 테이블에 저장
+        member_token.create(
+            {
+                members_id:member_instance.id,
+                token:token,
+                scope:"api",
+                expired_at:expired_at
+            }
+        )
 
         res.json(
             {

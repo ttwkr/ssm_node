@@ -1,9 +1,10 @@
 const express = require('express')
-const {get,post} = require("../api/writings");
+const {get, post} = require("../api/writings");
+const {checkToken} = require('../util/auth')
 const router = express.Router()
 
-router.route('/')
-    .get(get)
-    .post(post)
+
+router.get('/',get)
+router.post('/', checkToken, post)
 
 module.exports = router

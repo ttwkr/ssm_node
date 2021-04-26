@@ -1,6 +1,7 @@
 const express = require('express')
 const routes = require('./router')
 const bodyParser = require('body-parser')
+const session = require("express-session");
 const sequelize = require('./models').sequelize
 
 const app = express()

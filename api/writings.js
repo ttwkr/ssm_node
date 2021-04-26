@@ -29,9 +29,10 @@ const get = async (req, res, next) => {
 }
 
 const post = async (req, res) => {
-    //TODO 인증절차 구현해서 member 넣어줘야한다
+
     try{
         const data = req.body
+        data.members_id = req.member
         await writingModel.create(data)
         Response(res, {
             data: 'success',

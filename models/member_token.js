@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('writings', {
+  return sequelize.define('member_token', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
@@ -10,37 +10,35 @@ module.exports = function(sequelize, DataTypes) {
     members_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      comment: "멤버",
       references: {
         model: 'members',
         key: 'id'
       }
     },
-    title: {
+    scope: {
       type: DataTypes.STRING(45),
       allowNull: false,
-      comment: "제목"
+      comment: "범위"
     },
-    content: {
+    token: {
       type: DataTypes.TEXT,
       allowNull: false,
-      comment: "내용"
+      comment: "토큰(jwt)"
     },
     created_at: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     },
-    updated_at: {
+    expired_at: {
       type: DataTypes.DATE,
-      allowNull: true
-    },
-    deleted_at: {
-      type: DataTypes.DATE,
-      allowNull: true
+      allowNull: false,
+      comment: "만료일"
     }
   }, {
     sequelize,
-    tableName: 'writings',
+    tableName: 'member_token',
     timestamps: false,
     indexes: [
       {
@@ -52,17 +50,10 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "FK_writings_members_id_members_id",
+        name: "FK_member_token_members_id_members_id",
         using: "BTREE",
         fields: [
           { name: "members_id" },
-        ]
-      },
-      {
-        name: "writings_title_index",
-        using: "BTREE",
-        fields: [
-          { name: "title" },
         ]
       },
     ]
