@@ -1,7 +1,7 @@
 language: node_js
 node_js:
   - "14.15.2"
-before_install:
+before_install: # 패키지 다운로드 받기 전
   - npm install -g yarn
   - pwd
 branches:
@@ -19,7 +19,7 @@ deploy:
     bucket: ssm-remake
     region: ap-northeast-2
     skip_cleanup: true
-    local_dir: deploy
+    local_dir: deploy # deploy 디렉터리에 있는 파일을 s3로 업로드 하겠다는 의미
     wait-until-deployed: true
     on:
       repo: ttwkr/ssm_node
@@ -27,9 +27,9 @@ deploy:
   - provider: codedeploy
     access_key_id: $AWS_ACCESS_KEY
     secret_access_key: $AWS_SECRET_KEY
-    bucket: ssm-remake
-    key: ssm_node.zip
-    bundle_type: zip
+    bucket: ssm-remake # AWS CodeDeploy가 다운로드 받은 버킷
+    key: ssm_node.zip # 해당 버킷에 저장되어 있는 파일 이름
+    bundle_type: zip # 버킷에 저장되어 있는 파일의 확장자
     application: ssm_node
     deployment_group: ssm-node-group
     region: ap-northeast-2

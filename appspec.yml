@@ -1,3 +1,5 @@
+# code deploy 가 어떻게 행동할지 정의 하는 파일
+
 version: 0.0
 os: linux
 files:
