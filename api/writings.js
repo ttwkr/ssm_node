@@ -28,6 +28,7 @@ const get = async (req, res, next) => {
     }
 }
 
+//글감 등록
 const post = async (req, res) => {
 
     try{

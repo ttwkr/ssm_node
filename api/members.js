@@ -1,57 +1,34 @@
-const memberModel = require('../models').members
+const {members} = require('../models')
 const Response = require('../util/response')
 const {Op} = require("sequelize");
 
-const get = async (req, res, next) => {
+const get = async (req, res) => {
     try {
-        const members = await memberModel.findAll(
+        const id = req.member
+        const member_instance = await members.findOne(
             {
-                where: {
-                    deleted_at: {
-                        [Op.is]: null
-                    }
-                }
-            }
-        );
-        Response(res, {
-            data: members,
-            code: "0000"
-        })
-    } catch (e) {
-        console.log(e)
-        next(e)
-    }
-}
-
-const post = async (req, res, next) => {
-    try {
-        const now = new Date()
-        const data = req.body
-        await memberModel.create(
-            {
-                name: data.name,
-                phone: data.phone,
-                nick_name: data.nick_name,
-                email: data.email,
-                created_at: now,
+                where:{id},
+                attributes:['id','name','phone','email']
             }
         )
-        Response(res, "success")
-
+        res.json({
+            data:member_instance,
+            code:"0000"
+        })
     } catch (e) {
         console.log(e)
-        Response(res, {
-            data: e.errors[0].message,
-            code: "0002"
+        res.json({
+            data:e,
+            code:"0000"
         })
     }
 }
 
-const update = async (req, res, next) => {
+const update = async (req, res) => {
     try {
-        const member_id = req.query.id
         const data = req.body
-        await memberModel.update(
+        const member_id = req.member
+        await members.update(
             data,
             {
                 where: {
@@ -72,17 +49,17 @@ const update = async (req, res, next) => {
     }
 }
 
-const member_delete = async (req, res, next) => {
+const member_delete = async (req, res) => {
     try {
-        const query_param = res.query
+        const member_id = req.member
         const now = new Date()
-        await memberModel.update(
+        await members.update(
             {
                 deleted_at: now
             },
             {
                 where: {
-                    id: query_param.id
+                    id: member_id
                 }
             }
         )
@@ -97,7 +74,6 @@ const member_delete = async (req, res, next) => {
 
 module.exports = {
     get,
-    post,
     member_delete,
     update
 }
