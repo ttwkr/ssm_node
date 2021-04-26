@@ -33,6 +33,7 @@ const post = async (req, res) => {
     try{
         const data = req.body
         data.members_id = req.member
+        // 글 작성
         await writingModel.create(data)
         Response(res, {
             data: 'success',
