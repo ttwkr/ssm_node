@@ -1,4 +1,4 @@
-const {writings,writing_aggregation} = require('../models')
+const {writings, writing_aggregation} = require('../models')
 const Response = require('../util/response')
 const {Op} = require('sequelize')
 const db = require('../models/index')
@@ -6,18 +6,22 @@ const db = require('../models/index')
 const get = async (req, res, next) => {
     // 글감 목록
     try {
-        const writing_instance = await writings.findAll(
+        const writing_instances = await writings.findAll(
             {
                 where: {
                     deleted_at: {
                         [Op.is]: null
                     }
-                }
+                },
+                include: [{
+                    model:writing_aggregation,
+                    as:'writing_aggregations'
+                }]
             }
         )
 
         Response(res, {
-            data: writing_instance,
+            data: writing_instances,
             code: '0000'
         })
     } catch (e) {
@@ -38,13 +42,13 @@ const post = async (req, res) => {
         // 글 작성
         const writing_instance = await writings.create(
             data,
-            {transaction:t}
+            {transaction: t}
         )
         // 글감 통계 테이블 등록
         await writing_aggregation.create(
             {
-                writings_id:writing_instance.id
-            },{transaction:t}
+                writings_id: writing_instance.id
+            }, {transaction: t}
         )
 
         await t.commit()
