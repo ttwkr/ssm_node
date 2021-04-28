@@ -99,7 +99,7 @@ const join = async (req, res) => {
         )
         if (member_instance) {
             throw "already exists email"
-            
+
         } else {
             // 가입 시작
             const password = data.password
@@ -177,7 +177,7 @@ const login = async (req, res) => {
 
         res.json(
             {
-                data:"success",
+                data:token,
                 code:"0000"
             }
         )
