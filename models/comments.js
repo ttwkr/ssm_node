@@ -25,7 +25,6 @@ module.exports = function(sequelize, DataTypes) {
     },
     parent_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
       comment: "부모 댓글",
       references: {
         model: 'comments',

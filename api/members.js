@@ -1,6 +1,5 @@
 const {members} = require('../models')
 const Response = require('../util/response')
-const {Op} = require("sequelize");
 
 const get = async (req, res) => {
     try {
