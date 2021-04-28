@@ -42,39 +42,43 @@ const mailAuth = async (req, res) => {
 
 // 메일 인증번호 확인
 const verifyCode = async (req, res) => {
-    // 이메일과 인증번호 확인
-    // 테이블에서 검증코드 가져옴
-    const data = req.body
-    const verify_instance = await verify_code.findOne(
-        {
-            where: {
-                email: data.email,
-                code: data.code
+    try{
+        // 이메일과 인증번호 확인
+        // 테이블에서 검증코드 가져옴
+        const data = req.body
+        const verify_instance = await verify_code.findOne(
+            {
+                where: {
+                    email: data.email,
+                    code: data.code
+                }
             }
-        }
-    )
-    // 만료시간 5분전 확인
-    const now = new Date()
-    const expired_at = verify_instance.expired_at
-    const timeGap = (expired_at.getTime() - now.getTime()) / 1000 / 60
+        )
+        // 만료시간 5분전 확인
+        const now = new Date()
+        const expired_at = verify_instance.expired_at
+        const timeGap = (expired_at.getTime() - now.getTime()) / 1000 / 60
 
-    if (timeGap < 0) {
+        if (timeGap < 0) {
+            throw "code expired"
+        } else {
+            verify_instance.update(
+                {
+                    is_success: true
+                }
+            )
+            res.send(
+                {
+                    data: "success",
+                    code: "0000"
+                }
+            )
+        }
+    } catch (e) {
         res.json(
             {
-                data: "code expired",
+                data: e,
                 code: "0002"
-            }
-        )
-    } else {
-        verify_instance.update(
-            {
-                is_success: true
-            }
-        )
-        res.send(
-            {
-                data: "success",
-                code: "0000"
             }
         )
     }
@@ -94,12 +98,8 @@ const join = async (req, res) => {
             }
         )
         if (member_instance) {
-            res.json(
-                {
-                    data: "already exists email",
-                    code: "0002"
-                }
-            )
+            throw "already exists email"
+            
         } else {
             // 가입 시작
             const password = data.password
