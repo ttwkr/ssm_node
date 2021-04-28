@@ -15,6 +15,16 @@ module.exports = function(sequelize, DataTypes) {
         key: 'id'
       }
     },
+    type: {
+      type: DataTypes.CHAR(1),
+      allowNull: true,
+      comment: "타입"
+    },
+    is_public: {
+      type: DataTypes.TINYINT,
+      allowNull: true,
+      comment: "공개여부"
+    },
     title: {
       type: DataTypes.STRING(45),
       allowNull: false,

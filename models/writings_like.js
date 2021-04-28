@@ -1,45 +1,36 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('writing_word_aggergation', {
+  return sequelize.define('writings_like', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    words_id: {
+    members_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'words',
+        model: 'members',
         key: 'id'
       }
     },
-    total_writing_count: {
-      type: DataTypes.STRING(45),
+    writings_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
-      comment: "전체글감"
-    },
-    public_writing_count: {
-      type: DataTypes.STRING(45),
-      allowNull: false,
-      comment: "공개글감"
+      references: {
+        model: 'writings',
+        key: 'id'
+      }
     },
     created_at: {
       type: DataTypes.DATE,
-      allowNull: false
-    },
-    updated_at: {
-      type: DataTypes.DATE,
-      allowNull: true
-    },
-    deleted_at: {
-      type: DataTypes.DATE,
-      allowNull: true
+      allowNull: false,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     }
   }, {
     sequelize,
-    tableName: 'writing_word_aggergation',
+    tableName: 'writings_like',
     timestamps: false,
     indexes: [
       {
@@ -51,10 +42,17 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "FK_writing_word_aggergation_words_id_words_id",
+        name: "FK_writings_like_members_id_members_id",
         using: "BTREE",
         fields: [
-          { name: "words_id" },
+          { name: "members_id" },
+        ]
+      },
+      {
+        name: "FK_writings_like_writings_id_writings_id",
+        using: "BTREE",
+        fields: [
+          { name: "writings_id" },
         ]
       },
     ]

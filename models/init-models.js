@@ -6,9 +6,11 @@ var _members = require("./members");
 var _subscribe = require("./subscribe");
 var _verify_code = require("./verify_code");
 var _words = require("./words");
+var _writing_aggregation = require("./writing_aggregation");
 var _writing_word = require("./writing_word");
 var _writing_word_aggergation = require("./writing_word_aggergation");
 var _writings = require("./writings");
+var _writings_like = require("./writings_like");
 
 function initModels(sequelize) {
   var codes = _codes(sequelize, DataTypes);
@@ -18,9 +20,11 @@ function initModels(sequelize) {
   var subscribe = _subscribe(sequelize, DataTypes);
   var verify_code = _verify_code(sequelize, DataTypes);
   var words = _words(sequelize, DataTypes);
+  var writing_aggregation = _writing_aggregation(sequelize, DataTypes);
   var writing_word = _writing_word(sequelize, DataTypes);
   var writing_word_aggergation = _writing_word_aggergation(sequelize, DataTypes);
   var writings = _writings(sequelize, DataTypes);
+  var writings_like = _writings_like(sequelize, DataTypes);
 
   comments.belongsTo(comments, { as: "parent", foreignKey: "parent_id"});
   comments.hasMany(comments, { as: "comments", foreignKey: "parent_id"});
@@ -34,14 +38,20 @@ function initModels(sequelize) {
   members.hasMany(subscribe, { as: "target_members_subscribes", foreignKey: "target_members_id"});
   writings.belongsTo(members, { as: "member", foreignKey: "members_id"});
   members.hasMany(writings, { as: "writings", foreignKey: "members_id"});
+  writings_like.belongsTo(members, { as: "member", foreignKey: "members_id"});
+  members.hasMany(writings_like, { as: "writings_likes", foreignKey: "members_id"});
   writing_word.belongsTo(words, { as: "word", foreignKey: "words_id"});
   words.hasMany(writing_word, { as: "writing_words", foreignKey: "words_id"});
   writing_word_aggergation.belongsTo(words, { as: "word", foreignKey: "words_id"});
   words.hasMany(writing_word_aggergation, { as: "writing_word_aggergations", foreignKey: "words_id"});
   comments.belongsTo(writings, { as: "writing", foreignKey: "writings_id"});
   writings.hasMany(comments, { as: "comments", foreignKey: "writings_id"});
+  writing_aggregation.belongsTo(writings, { as: "writing", foreignKey: "writings_id"});
+  writings.hasMany(writing_aggregation, { as: "writing_aggregations", foreignKey: "writings_id"});
   writing_word.belongsTo(writings, { as: "writing", foreignKey: "writings_id"});
   writings.hasMany(writing_word, { as: "writing_words", foreignKey: "writings_id"});
+  writings_like.belongsTo(writings, { as: "writing", foreignKey: "writings_id"});
+  writings.hasMany(writings_like, { as: "writings_likes", foreignKey: "writings_id"});
 
   return {
     codes,
@@ -51,9 +61,11 @@ function initModels(sequelize) {
     subscribe,
     verify_code,
     words,
+    writing_aggregation,
     writing_word,
     writing_word_aggergation,
     writings,
+    writings_like,
   };
 }
 module.exports = initModels;
