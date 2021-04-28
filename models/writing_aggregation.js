@@ -18,11 +18,13 @@ module.exports = function(sequelize, DataTypes) {
     comment_count: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      defaultValue: 0,
       comment: "댓글 수"
     },
     like_count: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      defaultValue: 0,
       comment: "좋아요 수"
     },
     created_at: {

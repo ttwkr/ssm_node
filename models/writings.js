@@ -22,7 +22,8 @@ module.exports = function(sequelize, DataTypes) {
     },
     is_public: {
       type: DataTypes.TINYINT,
-      allowNull: true,
+      allowNull: false,
+      defaultValue: 1,
       comment: "공개여부"
     },
     title: {

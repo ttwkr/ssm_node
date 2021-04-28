@@ -1,11 +1,12 @@
-const {writings} = require('../models')
+const {writings,writing_aggregation} = require('../models')
 const Response = require('../util/response')
 const {Op} = require('sequelize')
+const db = require('../models/index')
 
 const get = async (req, res, next) => {
     // 글감 목록
     try {
-        const writings = await writingModel.findAll(
+        const writing_instance = await writings.findAll(
             {
                 where: {
                     deleted_at: {
@@ -16,7 +17,7 @@ const get = async (req, res, next) => {
         )
 
         Response(res, {
-            data: writings,
+            data: writing_instance,
             code: '0000'
         })
     } catch (e) {
@@ -30,18 +31,30 @@ const get = async (req, res, next) => {
 
 //글감 등록
 const post = async (req, res) => {
-
+    const t = await db.sequelize.transaction();
     try {
         const data = req.body
         data.members_id = req.member
         // 글 작성
-        await writingModel.create(data)
+        const writing_instance = await writings.create(
+            data,
+            {transaction:t}
+        )
+        // 글감 통계 테이블 등록
+        await writing_aggregation.create(
+            {
+                writings_id:writing_instance.id
+            },{transaction:t}
+        )
+
+        await t.commit()
         Response(res, {
             data: 'success',
             code: '0000'
         })
     } catch (e) {
         console.log(e)
+        await t.rollback();
         Response(res, {
             data: e,
             code: '0002'
@@ -53,13 +66,13 @@ const post = async (req, res) => {
 const detail = async (req, res) => {
     try {
         const id = req.params.id
-        const writing = await writings.findByPk(id)
-        if (writing === null) {
+        const writing_instance = await writings.findByPk(id)
+        if (writing_instance === null) {
             throw "Not Found"
         }
         res.json(
             {
-                data: writing,
+                data: writing_instance,
                 code: "0000"
             }
         )
