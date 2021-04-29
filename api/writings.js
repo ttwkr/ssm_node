@@ -1,4 +1,4 @@
-const {writings, writing_aggregation} = require('../models')
+const {writings, writing_aggregation} = require('../models').models()
 const Response = require('../util/response')
 const {Op} = require('sequelize')
 const db = require('../models/index')
