@@ -1,5 +1,5 @@
 const {matchMember} = require("../util/auth");
-const {comments} = require('../models')
+const {comments} = require('../models').models()
 
 //댓글목록
 const get = async (req, res) => {

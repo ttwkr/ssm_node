@@ -1,4 +1,4 @@
-const {members} = require('../models')
+const {members} = require('../models').models()
 const Response = require('../util/response')
 
 const get = async (req, res) => {

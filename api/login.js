@@ -1,5 +1,5 @@
 const {smtpTransport} = require('../config/email');
-const {verify_code, members, member_token} = require('../models')
+const {verify_code, members, member_token} = require('../models').models()
 const bcrypt = require('bcrypt')
 const {makeToken} = require('../util/auth')
 const {Op} = require('sequelize')
