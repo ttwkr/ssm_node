@@ -72,9 +72,9 @@ const checkToken = async (req, res, next) => {
 }
 
 // 각 컨텐츠의 수정/삭제 가능한 사람이 맞는지 확인
-const matchMember = (id, member_id, instance) => {
+const matchMember = async (id, member_id, instance) => {
     try{
-        const model_instance = instance.findByPk(id)
+        const model_instance = await instance.findByPk(id)
         if (member_id !== model_instance.members_id) {
             throw "Invalid Authorization"
         }
